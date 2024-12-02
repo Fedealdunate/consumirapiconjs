@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Cursos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+      .card-deck {
+        margin-top: 20px;
+      }
+
+    </style>
+<style>
+      body {
+        background-color: #000;
+      }
+      .card-deck {
+        margin-top: 20px;
+      }
+      .card {
+        background-color: #fff;
+        color: #000;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px #000;
+        transition: all 0.3s ease-in-out;
+      }
+      .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 0px 20px #000;
+      }
+      .card-title {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .card-text {
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card-deck" id="card-deck">
+
+
+      </div>
+    </div>
+
+    <script>
+      function obtenerDatos() {
+        fetch('https://aceitunate-e0bdf-default-rtdb.firebaseio.com/cursos.json')
+          .then(response => response.json())
+          .then(data => {
+            const cardDeck = document.getElementById('card-deck');
+            cardDeck.innerHTML = '';
+            for (let key in data) {
+              const objeto = data[key];
+
+
+              const card = document.createElement('div');
+              card.classList.add('card');
+
+              const imagen = document.createElement('img');
+              imagen.classList.add('card-img-top');
+              imagen.src = objeto.imagen;
+
+              const cardBody = document.createElement('div');
+              cardBody.classList.add('card-body');
+
+              const nombrecurso = document.createElement('h5');
+              nombrecurso.classList.add('card-title');
+              nombrecurso.textContent = objeto["nombrecurso"];
+
+              const duracion = document.createElement('p');
+              duracion.classList.add('card-text');
+              duracion.textContent = 'Duración: ' + objeto.duracion + ' meses';
+
+              const valor = document.createElement('p');
+              valor.classList.add('card-text');
+              valor.textContent = 'Valor: $' + objeto.valor;
+
+              cardBody.appendChild(nombrecurso);
+              cardBody.appendChild(duracion);
+              cardBody.appendChild(valor);
+
+              card.appendChild(imagen);
+              card.appendChild(cardBody);
+
+              cardDeck.appendChild(card);
+            }
+          });
+      }
+      obtenerDatos();
+      setInterval(obtenerDatos, 5000);
+    </script>
+  </body>
+</html>
